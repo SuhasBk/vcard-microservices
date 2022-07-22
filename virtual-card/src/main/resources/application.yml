@@ -1,0 +1,18 @@
+server:
+    port: 8082
+
+spring:
+    application:
+        name: VIRTUAL-CARD-SERVICE
+    data:
+        mongodb:
+            uri: ${VCARD_MONGO_URI}
+            database: virtual_cards  
+
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+    instance:
+        hostname: localhost
+        prefer-ip-address: true

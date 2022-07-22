@@ -1,0 +1,39 @@
+server:
+    port: 9191
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - GatewayAuthFilter
+
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
+      routes:
+        - id: giphy
+          uri: lb://GIPHY-SERVICE
+          predicates:
+          - Path=/giphy-service/**
+        
+        - id: vcard
+          uri: lb://VIRTUAL-CARD-SERVICE
+          predicates:
+          - Path=/vcard-service/**
+        
+        - id: users
+          uri: lb://USER-SERVICE
+          predicates:
+          - Path=/users-service/**

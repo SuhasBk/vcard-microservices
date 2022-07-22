@@ -1,0 +1,13 @@
+#register-card-content {
+    color: greenyellow;
+    margin: 0 auto;
+    margin-top: 7%;
+    width: 60vw;
+    display: flex;
+    text-align: center;
+}
+
+a {
+    color: white;
+    text-decoration-color: white;
+}

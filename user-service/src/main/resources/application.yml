@@ -1,0 +1,15 @@
+spring:
+    application:
+        name: USER-SERVICE
+    data:
+        mongodb:
+            uri: ${VCARD_MONGO_URI}
+            database: virtual_cards
+
+server:
+    port: 8081
+
+eureka:
+    client:
+        fetch-registry: true
+        register-with-eureka: true

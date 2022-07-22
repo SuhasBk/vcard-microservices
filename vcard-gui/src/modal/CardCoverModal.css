@@ -1,0 +1,9 @@
+#search-results {
+    display: flexbox;
+    align-items: stretch;
+}
+
+iframe {
+    width: 20%;
+    margin: 2%;
+}

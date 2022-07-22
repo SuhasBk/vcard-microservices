@@ -1,0 +1,42 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import UserService from './auth/UserService';
+import Header from './header/Header';
+import Home from './home/Home';
+import './index.css';
+import Login from './login/Login';
+import Profile from './profile/Profile';
+import Registration from './registration/Registration';
+import Protected from './route-guard/Protected';
+
+ReactDOM.createRoot(document.getElementById('root'))
+.render(
+    <BrowserRouter>
+        <Header></Header>
+        <Routes> 
+            <Route path='/' element={
+                <Protected isLoggedIn={UserService.isLoggedIn()}><Home /></Protected>
+            }></Route>
+
+            <Route path='/dashboard' element={
+                <Protected isLoggedIn={UserService.isLoggedIn()}><Home /></Protected>
+            }></Route>
+
+            <Route path='/profile' element={
+                <Protected isLoggedIn={UserService.isLoggedIn()}><Profile /></Protected>
+            }></Route>
+
+            <Route path='/signin' element={<Login />}></Route>
+
+            <Route path='/register' element={<Registration />}></Route>
+
+            <Route
+            path="*"
+            element={<>Page Not Found</>}
+            />
+
+        </Routes>
+    </BrowserRouter>
+);
