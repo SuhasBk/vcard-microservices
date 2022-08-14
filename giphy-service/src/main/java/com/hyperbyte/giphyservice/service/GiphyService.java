@@ -29,7 +29,7 @@ public class GiphyService {
     public List<GIF> search(String query) {
         try {
             query = URLEncoder.encode(query, "UTF-8");
-            URL url = new URL(String.format("https://api.giphy.com/v1/videos/search?q=%s&limit=20&api_key=%s", query, API_KEY));
+            URL url = new URL(String.format("https://api.giphy.com/v1/gifs/search?q=%s&limit=20&api_key=%s", query, API_KEY));
 
             log.info("GIPHY API URL: {}", url.toString());
             

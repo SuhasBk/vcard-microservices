@@ -18,6 +18,7 @@ public class VirtualCardWrapper {
     
     @Id
     UUID cardId;
+    String createdBy;
     String title;
     String category;
     String fromName;

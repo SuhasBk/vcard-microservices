@@ -3,30 +3,20 @@ import UserService from "../auth/UserService";
 import { Button, Form } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import TriggerAPI from '../api/Api';
-import Alerts from '../alert/Alert';
+import useAlert from '../alert/useAlert';
 
-function Profile(props) {
+function Profile() {
 
-    const [alertShow, setAlertShow] = useState(false);
-    const [alertMessage, setAlertMessage] = useState("");
-    const [alertVariant, setAlertVariant] = useState("");
     const [userObject, setUserObject] = useState(UserService.getUserDetails());
+    const {setAlert} = useAlert();
 
     useEffect(() => {
         setUserObject(JSON.parse(UserService.getUserDetails()));
     }, []);
 
-    let alertUser = (msg, type, timeout) => {
-        setAlertMessage(msg);
-        setAlertVariant(type);
-        setAlertShow(true);
-        if (timeout)
-            setTimeout(() => { setAlertShow(false); }, timeout);
-    }
-
     let updateUser = () => {
         if (!userObject.username || !userObject.password || !userObject.email || !userObject.name) {
-            alertUser("Fields cannot be empty!", "danger", 2500);
+            setAlert("Fields cannot be empty!", "danger");
             return;
         }
         TriggerAPI("users-service", "updateUser", "POST",
@@ -40,25 +30,18 @@ function Profile(props) {
             .then(response => response.json())
             .then(data => {
                 if(data.error) {
-                    alertUser(data.error, "danger", 5000);
+                    setAlert(data.error, "danger");
                 } else {
-                    alertUser("Profile updated successfully!", "success", 2000);
+                    setAlert("Profile updated successfully!", "success");
                     UserService.loginUser(data.userObject.username, data.userToken, () => {
                         window.location.href = "/dashboard";
                     });
                 }
-            })
-            .catch(err => {
-                alertUser("Server not responding.", "danger", 2500);
             });
     }
 
     return (
         <>
-            {alertShow && <><Alerts
-            message={alertMessage}
-            variant={alertVariant}>
-            </Alerts><br></br></>}
             <div id="profile-view">
                 <h3>Hello, {userObject.username}!</h3>
                 <Form id="user-form">

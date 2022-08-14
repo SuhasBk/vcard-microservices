@@ -20,6 +20,13 @@ function CardCoverModal(props) {
         }
     }
 
+    let giphyLookup = (search_term) => {
+        setSearchTerm(search_term);
+        if (search_term.length >= 3) {
+            searchGiphy();
+        }
+    }
+
     return (
         <>
             <Modal
@@ -40,20 +47,22 @@ function CardCoverModal(props) {
                     <Form>
                         <Form.Group>
                             <Form.Control type="text" placeholder="Start Typing..."
-                                onChange={(e) => { setSearchTerm(e.target.value) }}/>
+                                onChange={(e) => { giphyLookup(e.target.value) }}/>
                         </Form.Group>
                     </Form>
                     <Button className="mt-3" onClick={searchGiphy}>Search</Button>
                     <div id="search-results">
-                        {results && results.map((res, i) => {
+                        {results && results.map((gifObj, i) => {
                             return (
-                                <iframe key={i} title={res.title} src={res.url} onClick={(e) => {
-                                    props.updateCardCover(res.url);
-                                }}></iframe>
+                                <span key={i}>
+                                    <iframe title={gifObj.title} src={gifObj.url}></iframe>
+                                    <Button onClick={() => props.updateCardCover(gifObj)} variant="secondary">Pick</Button>
+                                </span>
                             );
                         })}
                     </div>
                 </Modal.Body>
+                <Modal.Footer>Powered by Giphy©</Modal.Footer>
             </Modal>
         </>
     );

@@ -12,7 +12,7 @@ let UserService = {
         .then(response => response.json())
         .then(data => {
             console.log("user logged in:", data);
-            sessionStorage.setItem(AuthService.getToken(), JSON.stringify({
+            localStorage.setItem(AuthService.getToken(), JSON.stringify({
                 id: data.id,
                 username: data.username,
                 name: data.name,
@@ -25,7 +25,7 @@ let UserService = {
     },
     logOutUser: (redirect=false) => {
         if (UserService.isLoggedIn()) {
-            sessionStorage.removeItem(AuthService.getToken());
+            localStorage.removeItem(AuthService.getToken());
             AuthService.clearToken();
             if(redirect) {
                 window.location.href = "/signin";
@@ -34,7 +34,7 @@ let UserService = {
     },
     getUserDetails: () => {
         if(UserService.isLoggedIn()) {
-            return sessionStorage.getItem(AuthService.getToken());
+            return localStorage.getItem(AuthService.getToken());
         } else {
             return null;
         }

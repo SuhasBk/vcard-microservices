@@ -26,6 +26,10 @@ let TriggerAPI = async (service, uri, method, content) => {
                 'Authorization': 'Bearer ' + AuthService.getToken()
             },
             body: JSON.stringify(content)
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Something went wrong", "danger");
         });
         return response;
     } catch(error) {

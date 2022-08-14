@@ -1,23 +1,4 @@
-#dashboard-content {
-    margin: 3%;
+.dashboard-content {
+    margin: 5%;
     text-align: center;
-}
-
-#card-cover {
-    object-fit: scale-down;
-    border: black 2px;
-    border-style: inset;
-    height: 70%;
-}
-
-#card-cover:hover {
-    background-color: grey;
-    transition: 0.5s;
-}
-
-.details {
-    display: flex;
-    margin: 3%;
-    align-items: stretch;
-    justify-content: space-evenly;
 }

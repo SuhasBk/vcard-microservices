@@ -1,36 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
-import Alerts from '../alert/Alert';
+import useAlert from '../alert/useAlert';
 import TriggerAPI from '../api/Api';
+import AuthService from '../auth/AuthService';
 import UserService from '../auth/UserService';
 import './Login.css';
 
 function Login() {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
-    const [alertShow, setAlertShow] = useState(false);
-    const [alertMessage, setAlertMessage] = useState("");
-    const [alertVariant, setAlertVariant] = useState("");
-
-    const location = useLocation();
+    const {setAlert} = useAlert();
 
     useEffect(() => {
         // to clear out the "protected route redirect" errors in history object:
         window.history.replaceState({}, document.title);
+        // remove left over tokens:
+        AuthService.clearToken();
     }, []);
-
-    let alertUser = (msg, type, timeout) => {
-        setAlertMessage(msg);
-        setAlertVariant(type);
-        setAlertShow(true);
-        if (timeout)
-            setTimeout(() => { setAlertShow(false); }, timeout);
-    }
 
     let loginUser = () => {
         if(!username || !password) {
-            alertUser("Please fill in all fields!", "danger", 2500);
+            setAlert("Please fill in all fields!", "danger");
             return;
         }
         TriggerAPI("auth-service", "login", "POST",
@@ -41,26 +31,18 @@ function Login() {
         .then(response => response.text())
         .then(token => {
             if(token.includes("Invalid")) {
-                alertUser(token, "danger", 2500);
+                setAlert(token, "danger");
             } else {
-                alertUser("You are now logged in, redirecting...", "success", null);
+                setAlert("You are now logged in, redirecting...", "success");
                 UserService.loginUser(username, token, () => {
                     window.location.href = "/dashboard";
                 });
             } 
-        })
-        .catch(err => {
-            alertUser("Server not responding.", "danger", 2500);
         });
     }
 
     return (
         <>
-            {location.state && <><Alerts message={location.state.error} variant="danger"></Alerts></>}
-            {alertShow && <><Alerts
-                message={alertMessage}
-                variant={alertVariant}>
-            </Alerts></>}
             <div id="login-card-content">
                 <Card>
                     <Card.Img src="login/login.png" style={

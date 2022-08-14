@@ -1,34 +1,24 @@
 import './Registration.css';
 import { useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import Alerts from "../alert/Alert";
 import TriggerAPI from "../api/Api";
 import UserService from "../auth/UserService";
+import useAlert from '../alert/useAlert';
 
 function Registration(props) {
     const [username, setUserName] = useState();
     const [name, setName] = useState();
     const [password, setPassword] = useState();
     const [email, setEmail] = useState();
-    const [alertShow, setAlertShow] = useState(false);
-    const [alertMessage, setAlertMessage] = useState("");
-    const [alertVariant, setAlertVariant] = useState("");
+    const {setAlert} = useAlert();
 
     useEffect(() => {
         window.history.replaceState({}, document.title);
     }, []);
 
-    let alertUser = (msg, type, timeout) => {
-        setAlertMessage(msg);
-        setAlertVariant(type);
-        setAlertShow(true);
-        if(timeout)
-            setTimeout(() => { setAlertShow(false); }, timeout);
-    }
-
     let registerUser = () => {
         if(!username || !password || !email || !name) {
-            alertUser("Please fill in all fields!", "danger", 2500);
+            setAlert("Please fill in all fields!", "danger");
             return;
         }
         TriggerAPI("auth-service", "register", "POST",
@@ -41,25 +31,18 @@ function Registration(props) {
             .then(response => response.text())
             .then(data => {
                 if (data.includes("Invalid")) {
-                    alertUser("Username already exists. Try Again!", "danger", 2500)
+                    setAlert("Username already exists. Try Again!", "danger")
                 } else {
-                    alertUser("Registered Successfully. Logging in...", "success", null);
+                    setAlert("Registered Successfully. Logging in...", "success");
                     UserService.loginUser(username, data, () => {
                         window.location.href = "/dashboard";
                     });
                 }
-            })
-            .catch(err => {
-                alertUser("Server not responding.", "danger", 2500);
             });
     }
 
     return (
         <>
-            {alertShow && <><Alerts
-                message={alertMessage}
-                variant={alertVariant}>
-            </Alerts><br></br></>}
             <div id="register-card-content">
                 <Card>
                     <Card.Img src="login/login.png" style={

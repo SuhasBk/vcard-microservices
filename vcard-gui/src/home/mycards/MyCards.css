@@ -1,0 +1,18 @@
+#mycards {
+    margin: 1%;
+    display: flexbox;
+    align-items: stretch;
+}
+
+#mycards iframe {
+    width: 100%;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card {
+    width: max-content;
+}
