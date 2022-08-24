@@ -1,0 +1,22 @@
+#editcard {
+    margin: 1%;
+}
+
+#editcard iframe {
+    width: 100%;
+}
+
+.new-gif-card {
+    margin: 4%;
+}
+
+#save-changes {
+    margin-top: 2%;
+}
+
+.card-details {
+    display: flex;
+    margin: 1%;
+    align-items: stretch;
+    justify-content: space-evenly;
+}

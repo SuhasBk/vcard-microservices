@@ -54,6 +54,11 @@ public class VirtualCardService {
         return cardWrappers;
     }
 
+    public boolean saveVirtualCard(VirtualCardWrapper cardWrapper) {
+        log.info("Entering {} with payload: {}", Thread.currentThread().getStackTrace()[1].getMethodName(), cardWrapper);
+        return vCardRepository.save(cardWrapper).getCardId() == cardWrapper.getCardId();
+    }
+
     public List<VirtualCardWrapper> getAllCards() {
         log.info("Entering {} with payload: {}", Thread.currentThread().getStackTrace()[1].getMethodName(), null);
         List<VirtualCardWrapper> cardWrappers = vCardRepository.findAll();

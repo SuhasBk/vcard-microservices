@@ -15,9 +15,17 @@
     transition: 0.5s;
 }
 
+.search-btn {
+    width: 100%;
+}
+
 .details {
     display: flex;
     margin: 3%;
     align-items: stretch;
     justify-content: space-evenly;
+}
+
+#card-details, #card-preview {
+    width: 100%;
 }

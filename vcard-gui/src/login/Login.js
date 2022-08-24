@@ -72,12 +72,10 @@ function Login() {
                                                 }
                                             }} required/>
                                     </Form.Group>
-                                <Card.Footer>
                                     <Button variant="primary" onClick={() => {loginUser()}}>
                                         Login
                                     </Button><br></br><br></br>
                                     Need an account? <a href="/register">Register Now!</a>
-                                </Card.Footer>
                             </Card.Body>
                         </Form>
                     </Card.ImgOverlay>

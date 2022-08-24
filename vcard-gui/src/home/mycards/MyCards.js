@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Card, CardGroup, Col, Row } from "react-bootstrap";
+import { Badge, Button, Card, CardGroup, Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import useAlert from "../../alert/useAlert";
 import TriggerAPI from "../../api/Api";
 import UserService from "../../auth/UserService";
@@ -7,6 +8,7 @@ import './MyCards.css';
 
 export default function MyCards(props) {
 
+    const navigator = useNavigate();
     const [mycards, setMyCards] = useState([]); 
     const { setAlert } = useAlert();
 
@@ -23,13 +25,13 @@ export default function MyCards(props) {
             });
     }
 
-    let editCard = () => {
-        
+    let editCard = (cardId) => {
+        navigator("/editcard", { state: { cardId: cardId } });
     }
 
     let deleteCard = (cardId) => {
         if (window.confirm("Are you sure you want to delete this card?")) {
-            TriggerAPI("vcard-service", "delete", "DELETE", { cardId: cardId })
+            TriggerAPI("vcard-service", "deleteCard", "DELETE", { cardId: cardId })
             .then(_ => {
                 setAlert("Card deleted successfully!", "success");
                 fetchMyCards();
@@ -41,11 +43,11 @@ export default function MyCards(props) {
 
     return (
         <div id="mycards">
-            <CardGroup>
-                <Row xs={1} md={4}>
-                {mycards.length > 0 &&
-                    [...mycards, ...mycards, ...mycards, ...mycards].map((cardDetails, index) =>
-                    // mycards.map((cardDetails, index) =>
+                {mycards.length > 0 
+                ?
+                <CardGroup>
+                    <Row xs={1} md={4}>
+                    {mycards.map((cardDetails, index) =>
                     <Col key={index}>
                         <Card>
                             <Card.Header>
@@ -54,18 +56,19 @@ export default function MyCards(props) {
                             <Card.Body>
                                 <Card.Title>{cardDetails.title}</Card.Title>
                                 <Card.Text>
-                                    {cardDetails.cards[0]?.text || <small>{"<no comments>"}</small>}
+                                    {cardDetails.cards[0]?.text || <Badge style={{textAlign: "center", width: "max-content"}} pill bg="dark">no comments</Badge>}
                                 </Card.Text>
                                 <Card.Footer className="card-footer">
-                                    <Button onClick={editCard} variant="primary"><small>Edit</small> ✍️</Button>
+                                        <Button onClick={() => editCard(cardDetails.cardId)} variant="primary"><small>Edit</small> ✍️</Button>
                                     <Button onClick={() => deleteCard(cardDetails.cardId)}variant="danger"><small>Delete</small>🗑</Button>
                                 </Card.Footer>
                             </Card.Body>
                         </Card>
-                    </Col>)
-                }
-                </Row>
-            </CardGroup>
+                    </Col>)}
+                    </Row>
+                </CardGroup>
+                : 
+                <Badge style={{textAlign: "center", width: "max-content"}} pill bg="info">You dont have any cards!</Badge>}
         </div>
     );
 }

@@ -11,16 +11,14 @@ function NewCard() {
 
     const navigator = useNavigate();
 
-    const [title, setTitle] = useState();
-    const [category, setCategory] = useState();
+    const [title, setTitle] = useState("");
+    const [category, setCategory] = useState("");
     const [senderObject, setSenderObject] = useState(UserService.getUserDetails());
     const [recipientObject, setRecipientObject] = useState({});
-    const [comments, setComments] = useState();
+    const [comments, setComments] = useState("");
     const [showSearchModal, setShowSearchModal] = useState(false);
     const { setAlert } = useAlert();
-    const [gifObject, setGifObject] = useState({
-        url: "/dashboard/search.png"
-    });
+    const [gifObject, setGifObject] = useState({});
 
     useEffect(() => {
         setSenderObject(JSON.parse(UserService.getUserDetails()));
@@ -39,25 +37,18 @@ function NewCard() {
             toEmail: recipientObject.email,
             title: title,
             category: category,
-            cards: [],
             createdBy: senderObject.username,
+            cards: []
         };
 
-        if(comments) {
-            payload.cards[0] = {
-                ...payload.cards[0],
-                text: comments,
-            }
+        if (Object.keys(gifObject).length > 0 || comments) {
+            payload.cards.push({
+                gif: gifObject,
+                text: comments
+            })
         }
 
-        if (gifObject.title && gifObject.url) {
-            payload.cards[0] = {
-                ...payload.cards[0],
-                ...gifObject
-            }
-        }
-
-        TriggerAPI("vcard-service", "create", "POST", payload)
+        TriggerAPI("vcard-service", "createCard", "POST", payload)
             .then(data => data.json())
             .then((data) => {
                 if (data) {
@@ -81,46 +72,41 @@ function NewCard() {
             <CardCoverModal show={showSearchModal} handleClose={() => { setShowSearchModal(false) }} updateCardCover={updateCardCover}></CardCoverModal>
             <h1>Create a new card!</h1>
             <CardGroup>
-                <Card>
+                <Card id="card-details">
                     <Card.Body>
                         <Card.Title>Fill Card Details:</Card.Title>
                         <hr></hr>
                         <Form className="details">
-                            <Form.Text>Card Details:</Form.Text>
-                            <Form.Group className="w-25" >
-                                <Form.Control type="text" placeholder="Enter Title *"
+                            <Form.Group className="w-10" >
+                                <Form.Control type="text" placeholder="Card Title *"
                                     onChange={(e) => setTitle(e.target.value)} />
                             </Form.Group>
 
-                            <Form.Group className="w-25" >
-                                <Form.Control type="text" placeholder="Enter Category"
+                            <Form.Group className="w-10" >
+                                <Form.Control type="text" placeholder="Card Category"
                                     onChange={(e) => setCategory(e.target.value)} />
                             </Form.Group>
                         </Form>
                         <hr></hr>
                         <Form className="details">
-                            <Form.Text>Recipient Details:</Form.Text>
-                            <Form.Group className="w-25" >
-                                <Form.Control type="text" placeholder="Enter Name *"
+                            <Form.Group className="w-10" >
+                                <Form.Control type="text" placeholder="Recipient Name *"
                                     onChange={(e) => { setRecipientObject({ ...recipientObject, name: e.target.value }) }} />
                             </Form.Group>
-
-                            <Form.Group className="w-25" >
-                                <Form.Control type="email" placeholder="Enter Email *"
+                            <Form.Group className="w-10" >
+                                <Form.Control type="email" placeholder="Recipient Email *"
                                     onChange={(e) => { setRecipientObject({ ...recipientObject, email: e.target.value }) }} />
                             </Form.Group>
                         </Form>
                         <hr></hr>
                         <Form className="details">
-                            <Form.Text>Sender Details:</Form.Text>
-                            <Form.Group className="w-25" >
-                                <Form.Control type="text" placeholder="Enter Name *"
+                            <Form.Group className="w-10" >
+                                <Form.Control type="text" placeholder="Sender Name *"
                                     onChange={(e) => { setSenderObject({ ...senderObject, name: e.target.value }) }}
                                     value={senderObject.name ?? ""} />
                             </Form.Group>
-
-                            <Form.Group className="w-25" >
-                                <Form.Control type="email" placeholder="Enter Email *"
+                            <Form.Group className="w-10" >
+                                <Form.Control type="email" placeholder="Sender Email *"
                                     onChange={(e) => { setSenderObject({ ...senderObject, email: e.target.value }) }}
                                     value={senderObject.email ?? ""} />
                             </Form.Group>
@@ -134,8 +120,9 @@ function NewCard() {
                 <Card id="card-preview">
                     <Card.Body>
                         <Card.Title>Choose a card cover:</Card.Title>
-                        <div id="card-cover" onClick={() => searchCardCovers()}>
-                            <iframe title="preview" src={gifObject.url} style={{ marginTop: "5%" }} alt="card cover"/>
+                        <div id="card-cover">
+                            <iframe title="preview" src={gifObject.url ? gifObject.url : ""} style={{ marginTop: "5%" }} alt="card cover"/>
+                            <Button className="search-btn" variant="outline-dark" onClick={() => searchCardCovers()}>Search Covers...</Button>
                         </div>
                         <Form>
                             <FloatingLabel controlId="floatingTextarea2" label="Comments (optional)">

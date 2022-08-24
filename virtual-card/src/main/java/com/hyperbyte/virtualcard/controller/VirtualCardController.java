@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,22 +24,22 @@ public class VirtualCardController {
     @Autowired
     VirtualCardService vCardService;
     
-    @PostMapping("/create")
+    @PostMapping("/createCard")
     public UUID createNewVirtualCard(@RequestBody VirtualCardWrapper cardWrapper) {
         return vCardService.createNewVirtualCard(cardWrapper);
     }
 
-    @GetMapping("/delete")
-    public boolean deleteVirtualCard(@RequestParam UUID id) {
+    @GetMapping("/deleteCard")
+    public boolean deleteVirtualCard(@RequestParam("cardId") UUID id) {
         return vCardService.deleteVirtualCard(id);
     }
 
-    @GetMapping("/get")
-    public VirtualCardWrapper getVirtualCard(@RequestParam UUID id) {
-        return vCardService.getVirtualCard(id);
+    @PostMapping("/getCard")
+    public VirtualCardWrapper getVirtualCard(@RequestBody VirtualCardWrapper cardWrapper) {
+        return vCardService.getVirtualCard(cardWrapper.getCardId());
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/deleteCard")
     public void deleteVirtualCard(@RequestBody VirtualCardWrapper cardWrapper) {
         vCardService.deleteVirtualCard(cardWrapper.getCardId());
     }
@@ -48,7 +49,12 @@ public class VirtualCardController {
         return vCardService.getMyCards(user);
     }
 
-    @GetMapping("/getAll")
+    @PutMapping("/saveCard")
+    public boolean saveVirtualCard(@RequestBody VirtualCardWrapper cardWrapper) {
+        return vCardService.saveVirtualCard(cardWrapper);
+    }
+
+    @GetMapping("/getAllCards")
     public List<VirtualCardWrapper> getAllCards() {
         return vCardService.getAllCards();
     }
