@@ -1,6 +1,8 @@
 package com.hyperbyte.apigateway.filter;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -43,7 +45,7 @@ public class GatewayAuthFilter implements GatewayFilterFactory<GatewayAuthFilter
                     throw new RuntimeException("Auth Info Missing!");
                 }
 
-                String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+                String authHeader = Optional.ofNullable(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION)).orElse(Collections.emptyList()).get(0);
 
                 String[] parts = authHeader.split(" ");
 
