@@ -113,7 +113,7 @@ function NewCard() {
                         </Form>
                         <hr></hr>
                         <Button variant="primary" onClick={() => { createCard() }}>
-                            Continue!
+                            Continue...
                         </Button>
                     </Card.Body>
                 </Card>

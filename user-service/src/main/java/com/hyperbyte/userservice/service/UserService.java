@@ -46,7 +46,7 @@ public class UserService {
 
     public User getUserByUsername(String username) {
         log.info("Inside getUserByUsername. Username: {}", username);
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElseThrow();
     }
 
     public void deleteUser(User user) {

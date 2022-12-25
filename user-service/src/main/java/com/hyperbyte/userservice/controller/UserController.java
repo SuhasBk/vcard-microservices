@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hyperbyte.userservice.model.User;
 import com.hyperbyte.userservice.service.UserService;
-import com.hyperbyte.userservice.util.JwtUtil;
+import com.hyperbyte.userservice.util.JwtUtils;
 
 import reactor.core.publisher.Mono;
 
@@ -28,27 +28,37 @@ public class UserController {
 
     @PostMapping("/createUser")
     public User registerNewUser(@RequestBody User user) throws Exception {
-        return userService.registerNewUser(user);
+        User dbUser = userService.registerNewUser(user);
+        dbUser.setPassword(null);
+        return dbUser;
     }
 
     @GetMapping("/getUserById")
     public User getUserById(@RequestParam("id") UUID id) {
-        return userService.getUserById(id);
+        User dbUser = userService.getUserById(id);
+        dbUser.setPassword(null);
+        return dbUser;
     }
 
     @PostMapping("/getUserById")
     public User getUserById(@RequestBody User user) {
-        return userService.getUserById(user.getId());
+        User dbUser = userService.getUserById(user.getId());
+        dbUser.setPassword(null);
+        return dbUser;
     }
 
     @GetMapping("/getUser")
     public User getUserByUsername(@RequestParam("username") String username) {
-        return userService.getUserByUsername(username);
+        User dbUser = userService.getUserByUsername(username);
+        dbUser.setPassword(null);
+        return dbUser;
     }
 
     @PostMapping("/getUser")
     public User getUserByUsername(@RequestBody User user) {
-        return userService.getUserByUsername(user.getUsername());
+        User dbUser = userService.getUserByUsername(user.getUsername());
+        dbUser.setPassword(null);
+        return dbUser;
     }
 
     @PostMapping("/deleteUser")
@@ -65,7 +75,7 @@ public class UserController {
     public Mono<Map<String, Object>> updatUser(@RequestBody User user) {
         Map<String, Object> response = new HashMap<>();
         User newUser = userService.updateUser(user);
-        String newToken = JwtUtil.generateToken(newUser.getId());
+        String newToken = JwtUtils.generateToken(newUser.getUsername());
         response.put("userObject", newUser);
         response.put("userToken", newToken);
         return Mono.just(response);

@@ -11,7 +11,6 @@ let UserService = {
         })
         .then(response => response.json())
         .then(data => {
-            console.log("user logged in:", data);
             localStorage.setItem(AuthService.getToken(), JSON.stringify({
                 id: data.id,
                 username: data.username,

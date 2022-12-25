@@ -68,7 +68,7 @@ export default function MyCards(props) {
                     </Row>
                 </CardGroup>
                 : 
-                <Badge style={{textAlign: "center", width: "max-content"}} pill bg="info">You dont have any cards!</Badge>}
+                <Badge style={{textAlign: "center", width: "max-content"}} pill bg="info">You dont have any cards</Badge>}
         </div>
     );
 }

@@ -6,6 +6,7 @@ let TriggerAPI = async (service, uri, method, content) => {
     let SCHEME = window.location.protocol;
     let DOMAIN = window.location.hostname;
     let gatewayUri = "";
+    let userId = UserService.isLoggedIn() ? JSON.parse(UserService.getUserDetails() || '{}')?.username : '';
 
     switch(service) {
         case "auth-service": gatewayUri = "/users-service/auth"; break;
@@ -23,7 +24,8 @@ let TriggerAPI = async (service, uri, method, content) => {
             method: method,
             headers:{
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + AuthService.getToken()
+                'Authorization': 'Bearer ' + AuthService.getToken(),
+                'USER_ID': userId
             },
             body: JSON.stringify(content)
         })

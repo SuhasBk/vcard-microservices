@@ -1,6 +1,5 @@
 package com.hyperbyte.apigateway.filter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -34,18 +33,18 @@ public class GatewayAuthFilter implements GatewayFilterFactory<GatewayAuthFilter
     public GatewayFilter apply(Config config) {
         
         return (exchange, chain) -> {
-            final List<String> apiEndpoints = List.of("/register", "/login");
+            final List<String> apiEndpoints = List.of("/register", "/login", "/getUser");
 
             Predicate<ServerHttpRequest> isApiSecured = r -> apiEndpoints
                 .stream()
                 .noneMatch(uri -> r.getURI().getPath().contains(uri));
             
             if(isApiSecured.test(exchange.getRequest())) {
-                if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                    throw new RuntimeException("Auth Info Missing!");
-                }
+                String authHeader = Optional.ofNullable(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION))
+                                            .orElseThrow(() -> new RuntimeException("Failed to authorize request. Auth info missing.")).get(0);
 
-                String authHeader = Optional.ofNullable(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION)).orElse(Collections.emptyList()).get(0);
+                String userId = Optional.ofNullable(exchange.getRequest().getHeaders().get("USER_ID"))
+                                        .orElseThrow(() -> new RuntimeException("Failed to authorize request. USER_ID header missing.")).get(0);
 
                 String[] parts = authHeader.split(" ");
 
@@ -58,6 +57,7 @@ public class GatewayAuthFilter implements GatewayFilterFactory<GatewayAuthFilter
                 return builder.build()
                     .get()
                     .uri("lb://USER-SERVICE/users-service/auth/validateToken/" + token)
+                    .header("USER_ID", userId)
                     .retrieve()
                     .bodyToMono(User.class)
                     .map(res -> {

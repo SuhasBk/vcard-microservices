@@ -43,11 +43,7 @@ export default function EditCard() {
     }, [location]);
 
     let deleteCard = (cardIndex) => {
-        if(window.confirm("Are you sure you want to card number - " + (cardIndex+1) + " ?")) {
-            setCards(cards.filter((_, index) => index !== cardIndex));
-        } else {
-            return;
-        }
+        setCards(cards.filter((_, index) => index !== cardIndex));
     }
 
     let searchCardCovers = (cardIndex) => {
@@ -172,8 +168,8 @@ export default function EditCard() {
                 </Button>
             </CardGroup>
             <div id="save-changes" className="d-grid gap-2">
-                <Button variant="outline-primary" size="lg" onClick={saveCardDetails}>
-                    Save Changes !
+                <Button variant="primary" size="lg" onClick={saveCardDetails}>
+                    Save Card
                 </Button>
             </div>
         </div>
