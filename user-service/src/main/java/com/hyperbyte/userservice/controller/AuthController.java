@@ -53,11 +53,11 @@ public class AuthController {
     }
 
     @GetMapping("/validateToken/{token}")
-    public User validateToken(@RequestHeader("USER_ID") String userId, @PathVariable("token") String token) {
+    public String validateToken(@RequestHeader("USER_ID") String userId, @PathVariable("token") String token) {
         try {
             if(JwtUtils.validateToken(token, userId)) {
                 String username = JwtUtils.extractUserId(token);
-                return userService.getUserByUsername(username);
+                return username;
             } else {
                 throw new RuntimeException("User not recognized.");
             }

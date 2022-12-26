@@ -11,8 +11,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.hyperbyte.apigateway.model.User;
-
 @Component
 public class GatewayAuthFilter implements GatewayFilterFactory<GatewayAuthFilter.Config> {
 
@@ -59,11 +57,11 @@ public class GatewayAuthFilter implements GatewayFilterFactory<GatewayAuthFilter
                     .uri("lb://USER-SERVICE/users-service/auth/validateToken/" + token)
                     .header("USER_ID", userId)
                     .retrieve()
-                    .bodyToMono(User.class)
-                    .map(res -> {
+                    .bodyToMono(String.class)
+                    .map(username -> {
                         exchange.getRequest()
                                 .mutate()
-                                .header("X-auth-user-status", res.getUsername())
+                                .header("X-auth-user-status", username)
                                 .build();
                         return exchange;
                     })
