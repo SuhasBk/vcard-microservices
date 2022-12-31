@@ -2,6 +2,10 @@
     margin: 1%;
 }
 
+.form-text {
+    color: yellow;
+}
+
 #editcard iframe {
     width: 100%;
 }

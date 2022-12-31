@@ -22,10 +22,9 @@ function GifCard(props) {
                     }
                 </Card.Header>
                 <Card.Body>
-                    <FloatingLabel controlId="floatingTextarea2" label="Comments">
+                    <FloatingLabel controlId="floatingTextarea2">
                         <Form.Control
                             as="textarea"
-                            placeholder="Leave a comment here"
                             style={{ height: '100px' }}
                             defaultValue={props.gifCard.text || ""}
                             onChange={(e) => props.updateCardComment(props.index, e.target.value)}

@@ -10,9 +10,10 @@ body {
 #root {
   height: 90vh;
   width: 100vw;
-  background-color: mediumaquamarine;
+  background-color: purple;
+  color: yellow;
 }
 
 html {
-  background-color: mediumaquamarine;
+  background-color: purple;
 }

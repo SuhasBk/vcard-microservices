@@ -30,15 +30,11 @@ export default function MyCards(props) {
     }
 
     let deleteCard = (cardId) => {
-        if (window.confirm("Are you sure you want to delete this card?")) {
-            TriggerAPI("vcard-service", "deleteCard", "DELETE", { cardId: cardId })
-            .then(_ => {
-                setAlert("Card deleted successfully!", "success");
-                fetchMyCards();
-            });
-        } else {
-            return;
-        }
+        TriggerAPI("vcard-service", "deleteCard", "DELETE", { cardId: cardId })
+        .then(_ => {
+            setAlert("Card deleted successfully!", "success");
+            setMyCards(mycards.filter(card => card.cardId != cardId));
+        });
     }
 
     return (
@@ -46,25 +42,25 @@ export default function MyCards(props) {
                 {mycards.length > 0 
                 ?
                 <CardGroup>
-                    <Row xs={1} md={4}>
-                    {mycards.map((cardDetails, index) =>
-                    <Col key={index}>
-                        <Card>
-                            <Card.Header>
-                                <iframe title={cardDetails.cards[0]?.gif.title} src={cardDetails.cards[0]?.gif.url} />
-                            </Card.Header>                        
-                            <Card.Body>
-                                <Card.Title>{cardDetails.title}</Card.Title>
-                                <Card.Text>
-                                    {cardDetails.cards[0]?.text || <Badge style={{textAlign: "center", width: "max-content"}} pill bg="dark">no comments</Badge>}
-                                </Card.Text>
-                                <Card.Footer className="card-footer">
-                                        <Button onClick={() => editCard(cardDetails.cardId)} variant="primary"><small>Edit</small> ✍️</Button>
-                                    <Button onClick={() => deleteCard(cardDetails.cardId)}variant="danger"><small>Delete</small>🗑</Button>
-                                </Card.Footer>
-                            </Card.Body>
-                        </Card>
-                    </Col>)}
+                    <Row>
+                        {mycards.map((cardDetails, index) =>
+                        <Col key={index}>
+                            <Card>
+                                <Card.Header>
+                                    <iframe title={cardDetails.cards[0]?.gif.title} src={cardDetails.cards[0]?.gif.url} />
+                                </Card.Header>                        
+                                <Card.Body>
+                                    <Card.Title>{cardDetails.title}</Card.Title>
+                                    <Card.Text>
+                                        {cardDetails.cards[0]?.text || <Badge style={{textAlign: "center", width: "max-content"}} pill bg="dark">no comments</Badge>}
+                                    </Card.Text>
+                                    <Card.Footer className="card-footer">
+                                            <Button onClick={() => editCard(cardDetails.cardId)} variant="primary"><small>Edit</small> ✍️</Button>
+                                        <Button onClick={() => deleteCard(cardDetails.cardId)}variant="danger"><small>Delete</small>🗑</Button>
+                                    </Card.Footer>
+                                </Card.Body>
+                            </Card>
+                        </Col>)}
                     </Row>
                 </CardGroup>
                 : 
