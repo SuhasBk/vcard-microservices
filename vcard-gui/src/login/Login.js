@@ -32,7 +32,10 @@ function Login() {
         .then(token => {
             if(token.includes("Invalid")) {
                 setAlert(token, "danger");
-            } else {
+            } else if (!token) {
+                setAlert("Unable to login! Please try again later", "danger");
+            }
+            else {
                 setAlert("You are now logged in, redirecting...", "success");
                 UserService.loginUser(username, token, () => {
                     window.location.href = "/dashboard";

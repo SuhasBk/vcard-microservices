@@ -33,7 +33,7 @@ export default function MyCards(props) {
         TriggerAPI("vcard-service", "deleteCard", "DELETE", { cardId: cardId })
         .then(_ => {
             setAlert("Card deleted successfully!", "success");
-            setMyCards(mycards.filter(card => card.cardId != cardId));
+            setMyCards(mycards.filter(card => card.cardId !== cardId));
         });
     }
 
