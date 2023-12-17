@@ -13,7 +13,7 @@ function Header() {
             {[false].map((expand) => (
                 <Navbar key={expand} bg="light" expand={expand} className="mb-3">
                     <Container fluid>
-                        <Navbar.Brand href="/dashboard">Virtual Greeting Card</Navbar.Brand>
+                        <Navbar.Brand href="/dashboard">vCard</Navbar.Brand>
                         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
                         <Navbar.Offcanvas
                             id={`offcanvasNavbar-expand-${expand}`}

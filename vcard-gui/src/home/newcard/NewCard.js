@@ -70,7 +70,7 @@ function NewCard() {
     return ( 
         <div className="newcard-content">
             <CardCoverModal show={showSearchModal} handleClose={() => { setShowSearchModal(false) }} updateCardCover={updateCardCover}></CardCoverModal>
-            <h1>Create a new card!</h1>
+            <h3>Create a new card!</h3>
             <CardGroup>
                 <Card id="card-details">
                     <Card.Body>

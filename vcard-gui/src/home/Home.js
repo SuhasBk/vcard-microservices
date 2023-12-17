@@ -11,7 +11,8 @@ function Home() {
 
     return (
         <div className="dashboard-content">
-            <h3>🙌 Hey {user.username}, welcome! 🙌</h3>
+            <h2>Welcome back, {user.name.split(' ')[0]}!</h2>
+            <br></br>
             <Accordion defaultActiveKey="0">
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>My Cards</Accordion.Header>
