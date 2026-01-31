@@ -32,6 +32,13 @@ export default function MyCards(props) {
         navigator("/editcard", { state: { cardId: cardId } });
     }
 
+    let shareCard = (cardId) => {
+        TriggerAPI("vcard-service", "shareCard", "POST", { cardId: cardId })
+        .then(_ => {
+            setAlert("Card sent successfully! ✅", "success");
+        });
+    }
+
     let deleteCard = (cardId) => {
         TriggerAPI("vcard-service", "deleteCard", "DELETE", { cardId: cardId })
         .then(_ => {
@@ -59,7 +66,8 @@ export default function MyCards(props) {
                                 </Card.Text>
                                 <Card.Footer className="card-footer">
                                         <Button onClick={() => editCard(cardDetails.cardId)} variant="primary"><small>Edit</small> ✍️</Button>
-                                        <Button onClick={() => {
+                                        <Button onClick={() => shareCard(cardDetails.cardId)} variant="primary"><small>Send</small> 🚀</Button>
+                                        <Button onClick={() => { 
                                             setCurrentCardId(cardDetails.cardId); 
                                             setConfirmDeleteModalShow(true);}}variant="danger">
                                             <small>Delete</small>🗑

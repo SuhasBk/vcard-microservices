@@ -39,6 +39,11 @@ public class VirtualCardController {
         return vCardService.getVirtualCard(cardWrapper.getCardId());
     }
 
+    @PostMapping("/shareCard")
+    public void shareVirtualCard(@RequestBody VirtualCardWrapper cardWrapper) {
+        vCardService.shareVirtualCard(cardWrapper.getCardId());
+    }
+
     @DeleteMapping("/deleteCard")
     public void deleteVirtualCard(@RequestBody VirtualCardWrapper cardWrapper) {
         vCardService.deleteVirtualCard(cardWrapper.getCardId());
