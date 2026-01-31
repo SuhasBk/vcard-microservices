@@ -1,0 +1,69 @@
+{
+    "compounds": [
+        {
+            "name": "Debug vCard Services!",
+            "configurations": [
+                "Spring Boot-DiscoveryServiceApplication<discovery-service>",
+                "Spring Boot-ApiGatewayApplication<api-gateway>",
+                "Spring Boot-UserServiceApplication<user-service>",
+                "Spring Boot-VirtualCardApplication<virtual-card>",
+                "Spring Boot-GiphyServiceApplication<giphy-service>"
+            ]
+        }
+    ],
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-VirtualCardApplication<virtual-card>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.hyperbyte.virtualcard.VirtualCardApplication",
+            "projectName": "virtual-card",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=54076 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=virtual-card"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DiscoveryServiceApplication<discovery-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.hyperbyte.discoveryservice.DiscoveryServiceApplication",
+            "projectName": "discovery-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ApiGatewayApplication<api-gateway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.hyperbyte.apigateway.ApiGatewayApplication",
+            "projectName": "api-gateway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-GiphyServiceApplication<giphy-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.hyperbyte.giphyservice.GiphyServiceApplication",
+            "projectName": "giphy-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-UserServiceApplication<user-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.hyperbyte.userservice.UserServiceApplication",
+            "projectName": "user-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
